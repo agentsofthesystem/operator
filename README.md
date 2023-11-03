@@ -15,14 +15,21 @@ On Linux:
 ```
 python -m venv venv
 . ./venv/bin/activate
-pip install git+https://github.com/agentsofthesystem/opartor
+pip install git+https://github.com/agentsofthesystem/operator
 ```
 
 On Windows:
 ```
 python -m venv venv
 .\venv\Scripts\Activate.ps1
-pip install git+https://github.com/agentsofthesystem/opartor
+pip install git+https://github.com/agentsofthesystem/operator
+```
+
+Please note: if a targeted version is required, then used the at symbol to specify branch, tag, etc..
+
+Eg, for the latest main branch:
+```
+pip install git+https://github.com/agentsofthesystem/operator@main
 ```
 
 ## Example
