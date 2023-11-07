@@ -10,7 +10,7 @@ class SupportedGameClient(BaseClient):
         get_url = self._urls.get_games_schmea_url()
 
         if self._verbose:
-            print(f"Getting all games:")
+            print("Getting game schema:")
             print(f"Get Url: {get_url}")
 
         response = self.make_request(RequestTypes.GET, get_url)
@@ -22,7 +22,7 @@ class SupportedGameClient(BaseClient):
         get_url = self._urls.get_all_games_url()
 
         if self._verbose:
-            print(f"Getting all games:")
+            print("Getting all games:")
             print(f"Get Url: {get_url}")
 
         response = self.make_request(RequestTypes.GET, get_url)
