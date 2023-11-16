@@ -1,6 +1,6 @@
 # Operator
 
-This python package is the designated python client to [Agent Smith](https://github.com/agentsofthesystem/AgentSmith).
+This python package is the designated python client to [Agent Smith](https://github.com/agentsofthesystem/agent-smith).
 
 ## Requirements
 
