@@ -3,6 +3,7 @@ import validators
 
 from operator_client.v1.urls import AppUrls
 from operator_client.v1.access import AccessClient
+from operator_client.v1.architect import ArchitectClient
 from operator_client.v1.app import BaseAppClient
 from operator_client.v1.executable import GenericExecutableClient
 from operator_client.v1.game import SupportedGameClient
@@ -25,3 +26,4 @@ class Operator:
         self.exe = GenericExecutableClient(urls, verbose, token=token)
         self.game = SupportedGameClient(urls, verbose, token=token)
         self.app = BaseAppClient(urls, verbose, token=token)
+        self.architect = ArchitectClient(urls, verbose, token=token)

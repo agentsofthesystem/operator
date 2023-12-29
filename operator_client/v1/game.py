@@ -42,6 +42,23 @@ class SupportedGameClient(BaseClient):
 
         return response.json()
 
+    def get_game_status(self, game_name):
+        get_url = self._urls.get_game_status_by_name_url(game_name)
+
+        if self._verbose:
+            print(f"Getting Specific Game Status: {game_name}")
+            print(f"Get Url: {get_url}")
+
+        response = self.make_request(RequestTypes.GET, get_url)
+        self.handle_response(response)
+
+        if response.status_code == 200:
+            output = response.json()
+        else:
+            output = None
+
+        return output
+
     def game_startup(self, game_name, input_args={}):
         post_url = self._urls.get_game_startup_url(game_name)
 
