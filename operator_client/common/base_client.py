@@ -13,11 +13,22 @@ class RequestTypes(Enum):
     DELETE = "DELETE"
 
 
+class FakeResponse(object):
+    def __init__(self, status_code) -> None:
+        self.status_code = status_code
+
+    def json(self):
+        return None
+
+
 class BaseClient:
-    def __init__(self, urls: AppUrls, verbose: bool, token: str = None) -> None:
+    def __init__(
+        self, urls: AppUrls, verbose: bool, token: str = None, timeout: int = 5
+    ) -> None:
         self._urls = urls
         self._verbose = verbose
         self._token = token
+        self._timeout = timeout  # seconds.
 
     def handle_response(self, response: requests.Response) -> None:
         if response.status_code == 200:
@@ -29,10 +40,12 @@ class BaseClient:
             print("Authorization Error: Request Made, but missing bearer token.")
         elif response.status_code == 403:
             print("Authorization Error: Token is not authorized.")
+        elif response.status_code == 404:
+            print("Authorization Error: Path Requested does not exist!")
         elif response.status_code == 500:
             print("Error: 500 - Internal Server Error - It's not the client.")
-            if self._verbose:
-                print(response.content)
+        elif response is None:
+            print("Error: Response Object is None.")
         else:
             print(f"Error: Other Response Code: {response.status_code}")
             if self._verbose:
@@ -63,18 +76,31 @@ class BaseClient:
                 "Content-Type": "application/json",
             }
 
-        if request_type == RequestTypes.GET:
-            response = requests.get(request_url, headers=headers)
-        elif request_type == RequestTypes.POST:
-            response = requests.post(request_url, json=payload, headers=headers)
-        elif request_type == RequestTypes.PATCH:
-            response = requests.patch(request_url, json=payload, headers=headers)
-        elif request_type == RequestTypes.DELETE:
-            response = requests.delete(request_url, headers=headers)
-        else:
-            print(
-                "BaseClient: make_request: Error! - Unsupported request type! Exiting..."
-            )
-            sys.exit(1)
+        try:
+            if request_type == RequestTypes.GET:
+                response = requests.get(
+                    request_url, headers=headers, timeout=self._timeout
+                )
+            elif request_type == RequestTypes.POST:
+                response = requests.post(
+                    request_url, json=payload, headers=headers, timeout=self._timeout
+                )
+            elif request_type == RequestTypes.PATCH:
+                response = requests.patch(
+                    request_url, json=payload, headers=headers, timeout=self._timeout
+                )
+            elif request_type == RequestTypes.DELETE:
+                response = requests.delete(
+                    request_url, headers=headers, timeout=self._timeout
+                )
+            else:
+                print(
+                    "BaseClient: make_request: Error! - Unsupported request type! Exiting..."
+                )
+                sys.exit(1)
+        except Exception as error:
+            logger.debug("Request Error. Responding with a fake response object.")
+            logger.debug(error)
+            return FakeResponse(500)
 
         return response

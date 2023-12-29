@@ -15,12 +15,6 @@ class AppUrls:
     ###############################################################################
     ###############################################################################
 
-    def get_health_url(self) -> str:
-        return f"{self.base_url}/health"
-
-    def get_secure_health_url(self) -> str:
-        return f"{self.base_url}/health/secure"
-
     def get_settings_url(self) -> str:
         return f"{self.base_url}/settings"
 
@@ -29,6 +23,21 @@ class AppUrls:
 
     def get_settings_by_name_url(self, setting_name: str) -> str:
         return f"{self.base_url}/settings/name/{setting_name}"
+
+    ###############################################################################
+    ###############################################################################
+    # Architect Specific Urls
+    ###############################################################################
+    ###############################################################################
+
+    def get_health_url(self) -> str:
+        return f"{self.base_url}/architect/health"
+
+    def get_secure_health_url(self) -> str:
+        return f"{self.base_url}/architect/health/secure"
+
+    def get_agent_info_url(self) -> str:
+        return f"{self.base_url}/architect/agent/info"
 
     ###############################################################################
     ###############################################################################
@@ -77,6 +86,9 @@ class AppUrls:
 
     def get_game_by_name_url(self, game_name) -> str:
         return f"{self.base_url}/game/{game_name}"
+
+    def get_game_status_by_name_url(self, game_name) -> str:
+        return f"{self.base_url}/game/status/{game_name}"
 
     def get_games_args_url(self, name) -> str:
         return f"{self.base_url}/games/{name}/arguments"
