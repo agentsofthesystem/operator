@@ -3,8 +3,10 @@ from operator_client.v1.urls import AppUrls
 
 
 class AccessClient(BaseClient):
-    def __init__(self, urls: AppUrls, verbose: bool, token: str = None) -> None:
-        super(AccessClient, self).__init__(urls, verbose, token)
+    def __init__(
+        self, urls: AppUrls, verbose: bool, token: str = None, certificate: str = None
+    ) -> None:
+        super(AccessClient, self).__init__(urls, verbose, token, certificate)
 
     def get_all_active_tokens(self):
         request_url = self._urls.get_active_tokens()
