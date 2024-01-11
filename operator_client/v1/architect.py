@@ -3,8 +3,10 @@ from operator_client.v1.urls import AppUrls
 
 
 class ArchitectClient(BaseClient):
-    def __init__(self, urls: AppUrls, verbose: bool, token: str = None) -> None:
-        super(ArchitectClient, self).__init__(urls, verbose, token)
+    def __init__(
+        self, urls: AppUrls, verbose: bool, token: str = None, certificate: str = None
+    ) -> None:
+        super(ArchitectClient, self).__init__(urls, verbose, token, certificate)
 
     def get_health(self, secure_version=False):
         if secure_version:

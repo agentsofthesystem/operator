@@ -3,8 +3,10 @@ from operator_client.v1.urls import AppUrls
 
 
 class BaseAppClient(BaseClient):
-    def __init__(self, urls: AppUrls, verbose: bool, token: str = None) -> None:
-        super(BaseAppClient, self).__init__(urls, verbose, token)
+    def __init__(
+        self, urls: AppUrls, verbose: bool, token: str = None, certificate: str = None
+    ) -> None:
+        super(BaseAppClient, self).__init__(urls, verbose, token, certificate)
 
     def create_setting(self, setting_name: str, setting_value: str):
         post_url = self._urls.get_settings_url()
