@@ -2,6 +2,8 @@ import os
 import requests
 import sys
 import tempfile
+import urllib3
+import warnings
 
 from operator_client.common import logger
 from operator_client.v1.urls import AppUrls
@@ -16,11 +18,12 @@ class RequestTypes(Enum):
 
 
 class FakeResponse(object):
-    def __init__(self, status_code) -> None:
+    def __init__(self, status_code: int, json=None) -> None:
         self.status_code = status_code
+        self.json_data = json
 
     def json(self):
-        return None
+        return self.json_data
 
 
 class BaseClient:
@@ -38,7 +41,7 @@ class BaseClient:
         self._timeout = timeout  # seconds.
 
         # In the event the user passed a certificate string.
-        self._certificate = certificate if certificate else None
+        self._certificate = None if certificate is None else certificate
 
     def handle_response(self, response: requests.Response) -> None:
         if response.status_code == 200:
@@ -95,6 +98,9 @@ class BaseClient:
             cert_file.seek(0)
             cert_file_name = cert_file.name
 
+        # Catch warnings:
+        warnings.filterwarnings("error")
+
         try:
             if request_type == RequestTypes.GET:
                 response = requests.get(
@@ -131,7 +137,18 @@ class BaseClient:
                     "BaseClient: make_request: Error! - Unsupported request type! Exiting..."
                 )
                 sys.exit(1)
-
+        except requests.exceptions.SSLError as ssl_error:
+            # This catches issues like an invlid or incorrect SSL certificate in use.
+            logger.debug("Request SSL Error. Responding with a fake response object.")
+            logger.debug(ssl_error)
+            return FakeResponse(526)
+        except urllib3.exceptions.InsecureRequestWarning as ssl_error:
+            # This catches the case where the user is ignoring SSL verification.
+            logger.debug(
+                "Request SSL Warning - Currently Requesting https but ignoring certificate check."
+            )
+            logger.debug(ssl_error)
+            return FakeResponse(525)
         except Exception as error:
             logger.debug("Request Error. Responding with a fake response object.")
             logger.debug(error)
@@ -141,5 +158,8 @@ class BaseClient:
             if self._certificate:
                 cert_file.close()
                 os.unlink(cert_file.name)
+
+            # Set warnings back to what it was
+            warnings.resetwarnings()
 
         return response
