@@ -23,6 +23,8 @@ class ArchitectClient(BaseClient):
 
         if response.status_code == 200:
             output = response.json()
+        elif response.status_code == 403:
+            output = "InvalidAccessToken"
         elif response.status_code == 526:
             output = "SSLError"
         elif response.status_code == 525:
@@ -44,6 +46,12 @@ class ArchitectClient(BaseClient):
 
         if response.status_code == 200:
             output = response.json()
+        elif response.status_code == 403:
+            output = "InvalidToken"
+        elif response.status_code == 526:
+            output = "SSLError"
+        elif response.status_code == 525:
+            output = "SSLCertMissing"
         else:
             output = None
 
