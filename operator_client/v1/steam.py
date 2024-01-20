@@ -19,6 +19,10 @@ class SteamGameClient(BaseClient):
     ) -> bool:
         post_url = self._urls.get_install_url()
 
+        if self._verbose:
+            print("Installing Application:")
+            print(f"Post Url: {post_url}")
+
         payload = {
             "steam_install_path": steam_install_path,
             "steam_id": steam_id,
@@ -39,21 +43,42 @@ class SteamGameClient(BaseClient):
 
         return True if response.status_code == 200 else False
 
+    def update_steam_app(
+        self,
+        steam_install_path,
+        steam_id,
+        install_dir,
+        user="anonymous",
+        password=None
+    ) -> bool:
+        post_url = self._urls.get_update_url()
+
+        if self._verbose:
+            print("Updating Application:")
+            print(f"Post Url: {post_url}")
+
+        payload = {
+            "steam_install_path": steam_install_path,
+            "steam_id": steam_id,
+            "install_dir": install_dir,
+            "user": user,
+            "password": password,
+        }
+
+        if self._verbose:
+            print("Installing Application:")
+            print(f"Post Url: {post_url}")
+
+        response = self.make_request(RequestTypes.POST, post_url, payload=payload)
+        self.handle_response(response)
+
+        return True if response.status_code == 200 else False
+
     def remove_steam_app(self):
         post_url = self._urls.get_remove_url()
 
         if self._verbose:
             print("Removing Application:")
-            print(f"Post Url: {post_url}")
-
-        response = self.make_request(RequestTypes.POST, post_url)
-        self.handle_response(response)
-
-    def update_steam_app(self):
-        post_url = self._urls.get_update_url()
-
-        if self._verbose:
-            print("Updating Application:")
             print(f"Post Url: {post_url}")
 
         response = self.make_request(RequestTypes.POST, post_url)
