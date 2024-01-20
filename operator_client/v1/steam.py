@@ -44,12 +44,7 @@ class SteamGameClient(BaseClient):
         return True if response.status_code == 200 else False
 
     def update_steam_app(
-        self,
-        steam_install_path,
-        steam_id,
-        install_dir,
-        user="anonymous",
-        password=None
+        self, steam_install_path, steam_id, install_dir, user="anonymous", password=None
     ) -> bool:
         post_url = self._urls.get_update_url()
 
