@@ -27,6 +27,9 @@ class AppUrls:
     def get_thread_alive_url(self, thread_ident: int) -> str:
         return f"{self.base_url}/thread/status/{thread_ident}"
 
+    def get_gui_initialization_data_url(self) -> str:
+        return f"{self.base_url}/gui/startup"
+
     ###############################################################################
     ###############################################################################
     # Architect Specific Urls

@@ -113,3 +113,19 @@ class BaseAppClient(BaseClient):
         json_data = response.json()
         alive = json_data["alive"]
         return alive
+
+    def get_gui_initialization_data(self):
+        get_url = self._urls.get_gui_initialization_data_url()
+
+        if self._verbose:
+            print(f"Get Url: {get_url}")
+
+        response = self.make_request(RequestTypes.GET, get_url)
+        self.handle_response(response)
+
+        output = None
+
+        if response.status_code == 200:
+            output = response.json()
+
+        return output
