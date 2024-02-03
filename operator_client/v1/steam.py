@@ -41,16 +41,18 @@ class SteamGameClient(BaseClient):
         response = self.make_request(RequestTypes.POST, post_url, payload=payload)
         self.handle_response(response)
 
-        return True if response.status_code == 200 else False
+        thread_ident = None
+
+        if response.status_code == 200:
+            json_data = response.json()
+            thread_ident = json_data["thread_ident"]
+
+        return thread_ident
 
     def update_steam_app(
         self, steam_install_path, steam_id, install_dir, user="anonymous", password=None
     ) -> bool:
         post_url = self._urls.get_update_url()
-
-        if self._verbose:
-            print("Updating Application:")
-            print(f"Post Url: {post_url}")
 
         payload = {
             "steam_install_path": steam_install_path,
@@ -61,13 +63,19 @@ class SteamGameClient(BaseClient):
         }
 
         if self._verbose:
-            print("Installing Application:")
+            print("Updating Application:")
             print(f"Post Url: {post_url}")
 
         response = self.make_request(RequestTypes.POST, post_url, payload=payload)
         self.handle_response(response)
 
-        return True if response.status_code == 200 else False
+        thread_ident = None
+
+        if response.status_code == 200:
+            json_data = response.json()
+            thread_ident = json_data["thread_ident"]
+
+        return thread_ident
 
     def remove_steam_app(self):
         post_url = self._urls.get_remove_url()

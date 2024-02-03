@@ -100,3 +100,16 @@ class BaseAppClient(BaseClient):
 
         response = self.make_request(RequestTypes.PATCH, patch_url, payload=payload)
         self.handle_response(response)
+
+    def is_thread_alive(self, thread_ident: int):
+        get_url = self._urls.get_thread_alive_url(thread_ident)
+
+        if self._verbose:
+            print(f"Get Url: {get_url}")
+
+        response = self.make_request(RequestTypes.GET, get_url)
+        self.handle_response(response)
+
+        json_data = response.json()
+        alive = json_data["alive"]
+        return alive

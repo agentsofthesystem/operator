@@ -24,6 +24,9 @@ class AppUrls:
     def get_settings_by_name_url(self, setting_name: str) -> str:
         return f"{self.base_url}/settings/name/{setting_name}"
 
+    def get_thread_alive_url(self, thread_ident: int) -> str:
+        return f"{self.base_url}/thread/status/{thread_ident}"
+
     ###############################################################################
     ###############################################################################
     # Architect Specific Urls
