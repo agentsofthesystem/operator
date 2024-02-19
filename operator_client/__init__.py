@@ -11,7 +11,13 @@ from operator_client.v1.steam import SteamGameClient
 
 class Operator:
     def __init__(
-        self, hostname, port=None, verbose=False, token=None, certificate: str = None
+        self,
+        hostname: str,
+        port: int = None,
+        verbose: bool = False,
+        timeout: int = 5,  # seconds
+        token: str = None,
+        certificate: str = None,
     ) -> None:
         self._host = hostname if port is None else f"{hostname}:{port}"
 
@@ -25,14 +31,18 @@ class Operator:
         urls = AppUrls(self._host)
         self._urls = urls
 
-        self.access = AccessClient(urls, verbose, token=token, certificate=certificate)
+        self.access = AccessClient(
+            urls, verbose, token=token, certificate=certificate, timeout=timeout
+        )
         self.steam = SteamGameClient(
-            urls, verbose, token=token, certificate=certificate
+            urls, verbose, token=token, certificate=certificate, timeout=timeout
         )
         self.game = SupportedGameClient(
-            urls, verbose, token=token, certificate=certificate
+            urls, verbose, token=token, certificate=certificate, timeout=timeout
         )
-        self.app = BaseAppClient(urls, verbose, token=token, certificate=certificate)
+        self.app = BaseAppClient(
+            urls, verbose, token=token, certificate=certificate, timeout=timeout
+        )
         self.architect = ArchitectClient(
-            urls, verbose, token=token, certificate=certificate
+            urls, verbose, token=token, certificate=certificate, timeout=timeout
         )

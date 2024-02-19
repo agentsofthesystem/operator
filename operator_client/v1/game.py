@@ -4,9 +4,16 @@ from operator_client.v1.urls import AppUrls
 
 class SupportedGameClient(BaseClient):
     def __init__(
-        self, urls: AppUrls, verbose: bool, token: str = None, certificate: str = None
+        self,
+        urls: AppUrls,
+        verbose: bool,
+        token: str = None,
+        certificate: str = None,
+        timeout: int = 5,
     ) -> None:
-        super(SupportedGameClient, self).__init__(urls, verbose, token, certificate)
+        super(SupportedGameClient, self).__init__(
+            urls, verbose, token, certificate, timeout
+        )
 
     def get_games_schema(self):
         get_url = self._urls.get_games_schmea_url()
@@ -280,3 +287,15 @@ class SupportedGameClient(BaseClient):
             return True
         else:
             return False
+
+    def update_game_data(self, game_id, **kwargs):
+        patch_url = self._urls.get_update_game_url(game_id)
+        payload = {}
+        payload.update(kwargs)
+
+        if self._verbose:
+            print(f"Getting Specific Game Status: Game ID: {game_id}")
+            print(f"Patch Url: {patch_url}")
+
+        response = self.make_request(RequestTypes.PATCH, patch_url, payload=payload)
+        self.handle_response(response)

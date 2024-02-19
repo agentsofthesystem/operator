@@ -60,6 +60,12 @@ class AppUrls:
     def get_update_url(self) -> str:
         return f"{self.base_url}/steam/app/update"
 
+    def get_app_info_url(self) -> str:
+        return f"{self.base_url}/steam/app/info"
+
+    def get_app_build_id_url(self) -> str:
+        return f"{self.base_url}/steam/app/build/id"
+
     ###############################################################################
     ###############################################################################
     # Supported Game Related Urls
@@ -71,6 +77,9 @@ class AppUrls:
 
     def get_game_by_name_url(self, game_name) -> str:
         return f"{self.base_url}/game/{game_name}"
+
+    def get_update_game_url(self, game_id) -> str:
+        return f"{self.base_url}/game/{game_id}"
 
     def get_game_status_by_name_url(self, game_name) -> str:
         return f"{self.base_url}/game/status/{game_name}"

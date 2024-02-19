@@ -4,9 +4,14 @@ from operator_client.v1.urls import AppUrls
 
 class BaseAppClient(BaseClient):
     def __init__(
-        self, urls: AppUrls, verbose: bool, token: str = None, certificate: str = None
+        self,
+        urls: AppUrls,
+        verbose: bool,
+        token: str = None,
+        certificate: str = None,
+        timeout: int = 5,
     ) -> None:
-        super(BaseAppClient, self).__init__(urls, verbose, token, certificate)
+        super(BaseAppClient, self).__init__(urls, verbose, token, certificate, timeout)
 
     def create_setting(self, setting_name: str, setting_value: str):
         post_url = self._urls.get_settings_url()
@@ -110,8 +115,12 @@ class BaseAppClient(BaseClient):
         response = self.make_request(RequestTypes.GET, get_url)
         self.handle_response(response)
 
-        json_data = response.json()
-        alive = json_data["alive"]
+        if response.status_code == 200:
+            json_data = response.json()
+            alive = json_data["alive"]
+        else:
+            alive = False
+
         return alive
 
     def get_gui_initialization_data(self):
