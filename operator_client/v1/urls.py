@@ -99,6 +99,9 @@ class AppUrls:
     def get_game_uninstall_url(self, game_name) -> str:
         return f"{self.base_url}/game/uninstall/{game_name}"
 
+    def get_game_update_check_url(self, game_id) -> str:
+        return f"{self.base_url}/game/update/check/{game_id}"
+
     def get_arguments_url(self) -> str:
         return f"{self.base_url}/game/arguments"
 

@@ -196,7 +196,7 @@ class SupportedGameClient(BaseClient):
 
         if self._verbose:
             print(f"Getting Game {game_name} Argument by name: {argument_name}")
-            print(f"Post Url: {get_url}")
+            print(f"Get Url: {get_url}")
 
         response = self.make_request(RequestTypes.GET, get_url)
         self.handle_response(response)
@@ -223,7 +223,7 @@ class SupportedGameClient(BaseClient):
 
         if self._verbose:
             print(f"Getting System Argument by id: {argument_id}")
-            print(f"Post Url: {get_url}")
+            print(f"Get Url: {get_url}")
 
         response = self.make_request(RequestTypes.GET, get_url)
         self.handle_response(response)
@@ -278,7 +278,7 @@ class SupportedGameClient(BaseClient):
 
         if self._verbose:
             print(f"Deleting Argument ID: {argument_id}")
-            print(f"Patch Url: {delete_url}")
+            print(f"Delete Url: {delete_url}")
 
         response = self.make_request(RequestTypes.DELETE, delete_url)
         self.handle_response(response)
@@ -299,3 +299,20 @@ class SupportedGameClient(BaseClient):
 
         response = self.make_request(RequestTypes.PATCH, patch_url, payload=payload)
         self.handle_response(response)
+
+    def check_for_update(self, game_id):
+        get_url = self._urls.get_game_update_check_url(game_id)
+
+        if self._verbose:
+            print(f"Checking for game update by id: {game_id}")
+            print(f"Get Url: {get_url}")
+
+        response = self.make_request(RequestTypes.GET, get_url)
+        self.handle_response(response)
+
+        output = None
+
+        if response.status_code == 200:
+            output = response.json()
+
+        return output
