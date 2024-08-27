@@ -138,3 +138,21 @@ class BaseAppClient(BaseClient):
             output = response.json()
 
         return output
+
+    def get_app_version(self):
+        get_url = self._urls.get_version_url()
+
+        if self._verbose:
+            print(f"Get Url: {get_url}")
+
+        response = self.make_request(RequestTypes.GET, get_url)
+        self.handle_response(response)
+
+        output = None
+        version = None
+
+        if response.status_code == 200:
+            output = response.json()
+            version = output["version"]
+
+        return version

@@ -15,6 +15,9 @@ class AppUrls:
     ###############################################################################
     ###############################################################################
 
+    def get_version_url(self) -> str:
+        return f"{self.base_url}/version"
+
     def get_settings_url(self) -> str:
         return f"{self.base_url}/settings"
 
